@@ -1,0 +1,29 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: >
+          mkdir -p $GITHUB_WORKSPACE/app/{css,cljs-out} &&
+          cp $GITHUB_WORKSPACE/resources/public/index.html $GITHUB_WORKSPACE/app/ &&
+          docker volume create m2 &&
+          docker run --rm -v $GITHUB_WORKSPACE:/tmp -v m2:/root/.m2 clojure clj -P &&
+          docker run --rm -v $GITHUB_WORKSPACE:/tmp -v m2:/root/.m2 clojure clojure -M -m figwheel.main -O simple -bo schematic &&
+          cp -rf $GITHUB_WORKSPACE/target/public/cljs-out/schematic-main.js $GITHUB_WORKSPACE/app/cljs-out &&
+          docker volume rm m2
+
+      - name: Publish
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: app
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
