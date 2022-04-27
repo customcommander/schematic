@@ -13,6 +13,7 @@ jobs:
       - name: Build
         run: >
           mkdir -p $GITHUB_WORKSPACE/app/{css,cljs-out} &&
+          cp $GITHUB_WORKSPACE/resources/public/css/style.css $GITHUB_WORKSPACE/app/css/ &&
           cp $GITHUB_WORKSPACE/resources/public/index.html $GITHUB_WORKSPACE/app/ &&
           docker volume create m2 &&
           docker run --rm -v $GITHUB_WORKSPACE:/tmp -v m2:/root/.m2 clojure clj -P &&
