@@ -6,10 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="css/style.css" rel="stylesheet" type="text/css">
   <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.min.js" integrity="sha512-hDyKEpCc9jPn3u2VffFjScCtNqZI+BAbThAhhDYqqqZbxMqmTSNIgdU0OU9BRD/8wFxHIWLAo561hh9fW7j6sA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/mode-json.min.js" integrity="sha512-tw7dwP1FWNLISF1EQN2Qa0xhLU1Uyf0+F9A/kIBNtP7oCVBAj7tEJhcOh8yVUAbbVYYsi6Bd9BjYCCy8AxVc8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <title>Schematic — Design JSON Schemas With Blocks!</title>
 </head>
 <body>
-  <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+  <main id="app">
+    <div id="ide"></div>
+    <div id="schema-viewer"></div>
+  </main>
   <script src="cljs-out/schematic-main.js"></script>
 </body>
 </html>
