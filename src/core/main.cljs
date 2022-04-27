@@ -1,18 +1,10 @@
 (ns ^:figwheel-hooks core.main
   (:require
-    [goog.dom :as dom]))
+    [goog.dom :as dom]
+    [goog.functions :as fun]
+    [core.block :as block]))
 
 (def workspace)
-
-(def ws-options
-  {:toolbox {:kind :flyoutToolbox
-   :contents [{:kind :block :type :controls_if}
-              {:kind :block :type :controls_repeat_ext}
-              {:kind :block :type :logic_compare}
-              {:kind :block :type :math_number}
-              {:kind :block :type :math_arithmetic}
-              {:kind :block :type :text}
-              {:kind :block :type :text_print}]}})
 
 ;; Things we need to do before Figwheel reloads the code
 (defn ^:before-load teardown []
@@ -20,5 +12,21 @@
         (.dispose workspace)
         (dom/removeChildren (dom/getElement "blocklyDiv"))))
 
+(.defineBlocksWithJsonArray js/Blockly
+  (clj->js [block/schema]))
+
+(def generator
+  (js/Blockly.Generator. "JsonSchemaGenerator"))
+
+(set! (.-schema generator) block/schema->code)
+
 (set! workspace
-  (.inject js/Blockly "blocklyDiv" (clj->js ws-options)))
+  (.inject js/Blockly "blocklyDiv"
+    (clj->js {:toolbox
+               {:kind :flyoutToolbox
+                :contents [{:kind :block :type (:type block/schema)}]}})))
+
+(.addChangeListener workspace
+  (fun/debounce (fn []
+                  (js/console.log (.workspaceToCode generator workspace)))
+                500))
