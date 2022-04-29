@@ -23,8 +23,11 @@
 (set! workspace
   (.inject js/Blockly "ide"
     (clj->js {:toolbox
-               {:kind :flyoutToolbox
-                :contents [{:kind :block :type (:type block/schema)}]}})))
+               {:kind :categoryToolbox
+                :contents [{:kind :category
+                            :name "Schema"
+                            :contents [{:kind :block
+                                        :type (:type block/schema)}]}]}})))
 
 (defonce schema-viewer
   (.edit js/ace (dom/getElement "schema-viewer")
@@ -33,9 +36,11 @@
 
 (.addChangeListener workspace
   (fun/debounce (fn []
-                  (let [code-str (.workspaceToCode generator workspace)
-                        schema-viewer-session (.getSession schema-viewer)]
-                    (.setValue schema-viewer-session (-> code-str
-                                                         (js/JSON.parse)
-                                                         (js/JSON.stringify nil 2)))))
+                  (let [code (.workspaceToCode generator workspace)
+                        schema-viewer (.getSession schema-viewer)]
+                    (.setValue schema-viewer (if (not= code "")
+                                                 (-> code
+                                                     (js/JSON.parse)
+                                                     (js/JSON.stringify nil 2))
+                                                 "{}"))))
                 500))
