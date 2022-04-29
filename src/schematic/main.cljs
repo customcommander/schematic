@@ -12,6 +12,7 @@
         (.dispose workspace)
         (dom/removeChildren (dom/getElement "ide"))))
 
+;; Register all custom blocks
 (.defineBlocksWithJsonArray js/Blockly
   (clj->js [block/schema]))
 
@@ -34,13 +35,10 @@
                 #js {:mode "ace/mode/json"
                      :readOnly true}))
 
+(defn display-schema []
+  (let [display (.getSession schema-viewer)
+        block (first (.getTopBlocks workspace))]
+    (.setValue display (.blockToCode generator block))))
+
 (.addChangeListener workspace
-  (fun/debounce (fn []
-                  (let [code (.workspaceToCode generator workspace)
-                        schema-viewer (.getSession schema-viewer)]
-                    (.setValue schema-viewer (if (not= code "")
-                                                 (-> code
-                                                     (js/JSON.parse)
-                                                     (js/JSON.stringify nil 2))
-                                                 "{}"))))
-                500))
+  (fun/debounce display-schema 500))

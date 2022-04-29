@@ -8,4 +8,4 @@
             :name "SCHEMA"}]})
 
 (defn schema->code []
-  "{\"foo\": \"bar\", \"bar\": [42, 42, 42]}")
+  "{}")
