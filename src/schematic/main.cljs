@@ -1,8 +1,8 @@
-(ns ^:figwheel-hooks core.main
+(ns ^:figwheel-hooks schematic.main
   (:require
     [goog.dom :as dom]
     [goog.functions :as fun]
-    [core.block :as block]))
+    [schematic.block :as block]))
 
 (def workspace)
 

@@ -1,4 +1,4 @@
-(ns core.block)
+(ns schematic.block)
 
 (def schema
   {:type :schema
