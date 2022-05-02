@@ -8,4 +8,4 @@
             :name "SCHEMA"}]})
 
 (defn schema->code []
-  "{}")
+  (js/JSON.stringify (clj->js {:x 42})))
