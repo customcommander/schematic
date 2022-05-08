@@ -12,23 +12,24 @@
         (.dispose workspace)
         (dom/removeChildren (dom/getElement "ide"))))
 
-;; Register all custom blocks
 (.defineBlocksWithJsonArray js/Blockly
-  (clj->js [block/schema]))
+  (clj->js (mapv block/get-def [block/schema])))
 
 (def generator
   (js/Blockly.Generator. "JsonSchemaGenerator"))
 
-(set! (.-schema generator) block/schema->code)
+(set! (.-schema generator) (block/get-generator block/schema))
+
+(defn toolbox [name blocks]
+  {:kind :category
+   :name name
+   :contents (mapv #(-> {:kind :block :type (block/get-type %)}) blocks)})
 
 (set! workspace
   (.inject js/Blockly "ide"
     (clj->js {:toolbox
                {:kind :categoryToolbox
-                :contents [{:kind :category
-                            :name "Schema"
-                            :contents [{:kind :block
-                                        :type (:type block/schema)}]}]}})))
+                :contents [(toolbox "Schema" [block/schema])]}})))
 
 (defonce schema-viewer
   (.edit js/ace (dom/getElement "schema-viewer")
