@@ -16,9 +16,9 @@
   (clj->js (mapv block/get-def [block/schema])))
 
 (def generator
-  (js/Blockly.Generator. "JsonSchemaGenerator"))
-
-(set! (.-schema generator) (block/get-generator block/schema))
+  (let [inst (js/Blockly.Generator. "JsonSchemaGenerator")]
+    (set! (.-schema inst) (block/get-generator block/schema))
+    inst))
 
 (defn toolbox [name blocks]
   {:kind :category
