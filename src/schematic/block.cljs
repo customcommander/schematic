@@ -17,3 +17,9 @@
                   :name "SCHEMA"}]}
    :gen (fn []
           (js/JSON.stringify (clj->js {:x 42})))})
+
+(def stringg
+  {:def {:type :string
+         :message0 "any string"}
+   :gen (fn []
+          (js/JSON.stringify (clj->js {:type :string})))})

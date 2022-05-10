@@ -13,11 +13,13 @@
         (dom/removeChildren (dom/getElement "ide"))))
 
 (.defineBlocksWithJsonArray js/Blockly
-  (clj->js (mapv block/get-def [block/schema])))
+  (clj->js (mapv block/get-def [block/schema
+                                block/stringg])))
 
 (def generator
   (let [inst (js/Blockly.Generator. "JsonSchemaGenerator")]
     (set! (.-schema inst) (block/get-generator block/schema))
+    (set! (.-string inst) (block/get-generator block/stringg))
     inst))
 
 (defn toolbox [name blocks]
@@ -29,7 +31,8 @@
   (.inject js/Blockly "ide"
     (clj->js {:toolbox
                {:kind :categoryToolbox
-                :contents [(toolbox "Schema" [block/schema])]}})))
+                :contents [(toolbox "Schema" [block/schema])
+                           (toolbox "String" [block/stringg])]}})))
 
 (defonce schema-viewer
   (.edit js/ace (dom/getElement "schema-viewer")
