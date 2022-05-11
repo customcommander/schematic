@@ -1,4 +1,5 @@
-(ns schematic.block)
+(ns schematic.block
+  (:require-macros [schematic.lib :as lib :refer [defgen]]))
 
 (defn get-def [blk]
   (:def blk))
@@ -15,11 +16,9 @@
          :args0 [{:type :input_dummy}
                  {:type :input_statement
                   :name "SCHEMA"}]}
-   :gen (fn []
-          (js/JSON.stringify (clj->js {:x 42})))})
+   :gen (defgen (fn [] {:x 42}))})
 
 (def stringg
   {:def {:type :string
          :message0 "any string"}
-   :gen (fn []
-          (js/JSON.stringify (clj->js {:type :string})))})
+   :gen (defgen (fn [] {:type :string}))})
