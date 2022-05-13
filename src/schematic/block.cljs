@@ -1,5 +1,5 @@
 (ns schematic.block
-  (:require-macros [schematic.lib :as lib :refer [defgen]]))
+  (:require-macros [schematic.lib :as lib]))
 
 (defn get-def [blk]
   (:def blk))
@@ -16,9 +16,12 @@
          :args0 [{:type :input_dummy}
                  {:type :input_statement
                   :name "SCHEMA"}]}
-   :gen (defgen (fn [] {:x 42}))})
+   :gen (lib/defgen (fn []
+                      {}))})
 
 (def stringg
   {:def {:type :string
-         :message0 "any string"}
-   :gen (defgen (fn [] {:type :string}))})
+         :message0 "any string"
+         :previousStatement nil}
+   :gen (lib/defgen (fn []
+                      {:type :string}))})
