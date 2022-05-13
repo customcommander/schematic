@@ -32,3 +32,10 @@
          :previousStatement nil}
    :gen (lib/defgen (fn []
                       {:type :string}))})
+
+(def number
+  {:def {:type :number
+         :message0 "any number"
+         :previousStatement nil}
+   :gen (lib/defgen (fn []
+                      {:type :number}))})

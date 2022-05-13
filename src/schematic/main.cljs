@@ -14,7 +14,8 @@
 
 (.defineBlocksWithJsonArray js/Blockly
   (clj->js (mapv block/get-def [block/schema
-                                block/stringg])))
+                                block/stringg
+                                block/number])))
 
 ;; Blockly generator for JSON Schema.
 ;; Attach the instance to the global Blockly object (in the JS namespace).
@@ -24,6 +25,7 @@
     (set! (.-JsonSchema js/Blockly) inst)
     (set! (.-schema inst) (block/get-generator block/schema))
     (set! (.-string inst) (block/get-generator block/stringg))
+    (set! (.-number inst) (block/get-generator block/number))
     inst))
 
 (defn toolbox [name blocks]
@@ -36,7 +38,8 @@
     (clj->js {:toolbox
                {:kind :categoryToolbox
                 :contents [(toolbox "Schema" [block/schema])
-                           (toolbox "String" [block/stringg])]}})))
+                           (toolbox "String" [block/stringg])
+                           (toolbox "Number" [block/number])]}})))
 
 (defonce schema-viewer
   (.edit js/ace (dom/getElement "schema-viewer")
