@@ -45,10 +45,11 @@
 
 (defn display-schema []
   (let [display (.getSession schema-viewer)
-        block (first (.getTopBlocks workspace))]
-    (.setValue display (-> (.blockToCode generator block)
-                           (js/JSON.parse)
-                           (js/JSON.stringify nil 2)))))
+        blocks (filter #(= "schema" (.-type %)) (.getTopBlocks workspace))]
+    (when-let [block (first blocks)]
+      (.setValue display (-> (.blockToCode generator block)
+                             (js/JSON.parse)
+                             (js/JSON.stringify nil 2))))))
 
 (.addChangeListener workspace
   (fun/debounce display-schema 500))
