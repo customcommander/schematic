@@ -10,14 +10,21 @@
 (defn get-generator [blk]
   (:gen blk))
 
+(defn statement->code
+  [bl name default]
+  (let [code (.statementToCode js/Blockly.JsonSchema bl name)]
+    (if (not (empty? code))
+        (js/JSON.parse code)
+        default)))
+
 (def schema
   {:def {:type :schema
          :message0 "schema %1 %2"
          :args0 [{:type :input_dummy}
                  {:type :input_statement
                   :name "SCHEMA"}]}
-   :gen (lib/defgen (fn []
-                      {}))})
+   :gen (lib/defgen (fn [bl]
+                      (statement->code bl "SCHEMA" {})))})
 
 (def stringg
   {:def {:type :string
