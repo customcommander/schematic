@@ -16,8 +16,12 @@
   (clj->js (mapv block/get-def [block/schema
                                 block/stringg])))
 
+;; Blockly generator for JSON Schema.
+;; Attach the instance to the global Blockly object (in the JS namespace).
+;; Also attach code-generating functions for each block.
 (def generator
-  (let [inst (js/Blockly.Generator. "JsonSchemaGenerator")]
+  (let [inst (js/Blockly.Generator. "JsonSchema")]
+    (set! (.-JsonSchema js/Blockly) inst)
     (set! (.-schema inst) (block/get-generator block/schema))
     (set! (.-string inst) (block/get-generator block/stringg))
     inst))
