@@ -35,6 +35,20 @@
    :gen (lib/defgen (fn []
                       {:type :string}))})
 
+(def string-regex
+  {:def {:type :string_regex
+         :colour 118
+         :message0 "regex: /%1/"
+         :args0 [{:type :field_input
+                  :name "REGEX"
+                  :spellcheck false}]
+         :previousStatement nil}
+   :gen (lib/defgen (fn [bl]
+                      (let [f (.getFieldValue bl "REGEX")]
+                        (if (not (empty? f))
+                            {:type :string :pattern f}
+                            {:type :string}))))})
+
 (def number
   {:def {:type :number
          :colour 208
