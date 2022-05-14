@@ -28,8 +28,9 @@
     (set! (.-number inst) (block/get-generator block/number))
     inst))
 
-(defn toolbox [name blocks]
+(defn toolbox [name clr blocks]
   {:kind :category
+   :colour clr
    :name name
    :contents (mapv #(-> {:kind :block :type (block/get-type %)}) blocks)})
 
@@ -37,9 +38,9 @@
   (.inject js/Blockly "ide"
     (clj->js {:toolbox
                {:kind :categoryToolbox
-                :contents [(toolbox "Schema" [block/schema])
-                           (toolbox "String" [block/stringg])
-                           (toolbox "Number" [block/number])]}})))
+                :contents [(toolbox "Schema" 264 [block/schema])
+                           (toolbox "String" 118 [block/stringg])
+                           (toolbox "Number" 208 [block/number])]}})))
 
 (defonce schema-viewer
   (.edit js/ace (dom/getElement "schema-viewer")

@@ -19,6 +19,7 @@
 
 (def schema
   {:def {:type :schema
+         :colour 264
          :message0 "schema %1 %2"
          :args0 [{:type :input_dummy}
                  {:type :input_statement
@@ -28,6 +29,7 @@
 
 (def stringg
   {:def {:type :string
+         :colour 118
          :message0 "any string"
          :previousStatement nil}
    :gen (lib/defgen (fn []
@@ -35,6 +37,7 @@
 
 (def number
   {:def {:type :number
+         :colour 208
          :message0 "any number"
          :previousStatement nil}
    :gen (lib/defgen (fn []
