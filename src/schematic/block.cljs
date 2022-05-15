@@ -49,6 +49,36 @@
                             {:type :string :pattern f}
                             {:type :string}))))})
 
+(def string-format
+  {:def {:type :string_format
+         :colour 118
+         :previousStatement nil
+         :message0 "format: %1"
+         :args0 [{:type :field_dropdown
+                  :name "STRING_FORMAT"
+                  :options [["date" "date"]
+                            ["date-time"             "date-time"            ]
+                            ["duration"              "duration"             ]
+                            ["email"                 "email"                ]
+                            ["hostname"              "hostname"             ]
+                            ["idn-email"             "idn-email"            ]
+                            ["idn-hostname"          "idn-hostname"         ]
+                            ["ipv4"                  "ipv4"                 ]
+                            ["ipv6"                  "ipv6"                 ]
+                            ["iri"                   "iri"                  ]
+                            ["iri-reference"         "iri-reference"        ]
+                            ["json-pointer"          "json-pointer"         ]
+                            ["regex"                 "regex"                ]
+                            ["relative-json-pointer" "relative-json-pointer"]
+                            ["time"                  "time"                 ]
+                            ["uri"                   "uri"                  ]
+                            ["uri-reference"         "uri-reference"        ]
+                            ["uri-template"          "uri-template"         ]
+                            ["uuid" "uuid"                                  ]]}]}
+   :gen (lib/defgen (fn [bl]
+                      {:type :string
+                       :format (.getFieldValue bl "STRING_FORMAT")}))})
+
 (def number
   {:def {:type :number
          :colour 208

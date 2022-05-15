@@ -16,6 +16,7 @@
   (clj->js (mapv block/get-def [block/schema
                                 block/stringg
                                 block/string-regex
+                                block/string-format
                                 block/number])))
 
 ;; Blockly generator for JSON Schema.
@@ -27,6 +28,7 @@
     (set! (.-schema inst) (block/get-generator block/schema))
     (set! (.-string inst) (block/get-generator block/stringg))
     (set! (.-string_regex inst) (block/get-generator block/string-regex))
+    (set! (.-string_format inst) (block/get-generator block/string-format))
     (set! (.-number inst) (block/get-generator block/number))
     inst))
 
@@ -42,7 +44,8 @@
                {:kind :categoryToolbox
                 :contents [(toolbox "Schema" 264 [block/schema])
                            (toolbox "String" 118 [block/stringg
-                                                  block/string-regex])
+                                                  block/string-regex
+                                                  block/string-format])
                            (toolbox "Number" 208 [block/number])]}})))
 
 (defonce schema-viewer
