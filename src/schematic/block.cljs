@@ -10,7 +10,7 @@
 (defn get-generator [blk]
   (:gen blk))
 
-(defn statement->code
+(defn- statement->code
   [bl name default]
   (let [code (.statementToCode js/Blockly.JsonSchema bl name)]
     (if (not (empty? code))
@@ -96,16 +96,26 @@
 (defn- property-name [bl]
   (.getFieldValue bl "property_name"))
 
+(defn- get-properties [bl]
+  (loop [prop (.getInputTargetBlock bl "object_props")
+         props []]
+    (if prop
+        (recur (.getNextBlock prop)
+               (conj props {:name (.getFieldValue prop "property_name")
+                            :required (is-checked? prop "property_required")
+                            :code (.statementToCode js/Blockly.JsonSchema prop "SCHEMA")}))
+        props)))
+
 (defn- object-base-generator [bl]
-  (let [properties (remove #(empty? (property-name %)) (.getChildren bl))
-        properties-required (filter #(is-checked? % "property_required") properties)]
+  (let [properties (remove #(or (empty? (:name %)) (empty? (:code %))) (get-properties bl))
+        properties-required (filter #(:required %) properties)]
     (merge {:type :object}
            {:additionalProperties (is-checked? bl "object_additional_props")}
            (when (not (empty? properties-required))
-             {:required (map property-name properties-required)})
+             {:required (map :name properties-required)})
            (when (not (empty? properties))
-             {:properties (into {} (mapv #(vector (property-name %)
-                                                  (statement->code % "SCHEMA" {}))
+             {:properties (into {} (mapv #(vector (:name %)
+                                                  (js/JSON.parse (:code %)))
                                          properties))}))))
 
 (def object-base
