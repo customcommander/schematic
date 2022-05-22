@@ -1,4 +1,5 @@
 (ns schematic.block
+  (:require [schematic.constant :as c])
   (:require-macros [schematic.lib :as lib]))
 
 (defn get-def [blk]
@@ -19,7 +20,7 @@
 
 (def schema
   {:def {:type :schema
-         :colour 264
+         :colour c/colour-schema
          :message0 "schema %1 %2"
          :args0 [{:type :input_dummy}
                  {:type :input_statement
@@ -30,7 +31,7 @@
 
 (def string-base
   {:def {:type :string_base
-         :colour 118
+         :colour c/colour-string
          :message0 "any string"
          :previousStatement :schema_type}
    :gen (lib/defgen (fn []
@@ -38,7 +39,7 @@
 
 (def string-regex
   {:def {:type :string_regex
-         :colour 118
+         :colour c/colour-string
          :message0 "regex: /%1/"
          :args0 [{:type :field_input
                   :name "REGEX"
@@ -52,7 +53,7 @@
 
 (def string-format
   {:def {:type :string_format
-         :colour 118
+         :colour c/colour-string
          :previousStatement :schema_type
          :message0 "format: %1"
          :args0 [{:type :field_dropdown
@@ -82,7 +83,6 @@
 
 (def number
   {:def {:type :number
-         :colour 208
          :message0 "any number"
          :previousStatement :schema_type}
    :gen (lib/defgen (fn []
@@ -120,7 +120,7 @@
 
 (def object-base
   {:def {:type :object_base
-         :colour 52
+         :colour c/colour-object
          :previousStatement nil
          :message0 "object %1 %2 %3 allow other properties"
          :args0 [{:type :input_dummy}
@@ -134,7 +134,7 @@
 
 (def object-property
   {:def {:type :object_property
-         :colour 52
+         :colour c/colour-object
          :previousStatement :property
          :nextStatement :property
          :message0 "property %1 is %2 required %3 %4"

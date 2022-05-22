@@ -2,6 +2,7 @@
   (:require
     [goog.dom :as dom]
     [goog.functions :as fun]
+    [schematic.constant :as c]
     [schematic.block :as block]))
 
 (def workspace)
@@ -46,14 +47,13 @@
   (.inject js/Blockly "ide"
     (clj->js {:toolbox
                {:kind :categoryToolbox
-                :contents [(toolbox "Schema" 264 [block/schema])
-                           (toolbox "String" 118 [block/string-base
-                                                  block/string-regex
-                                                  block/string-format])
-                           (toolbox "Number" 208 [block/number])
-                           (toolbox "Object" 52  [block/object-base
-                                                  block/object-property])
-                           ]}})))
+                :contents [(toolbox "Schema" c/colour-schema [block/schema])
+                           (toolbox "String" c/colour-string [block/string-base
+                                                              block/string-regex
+                                                              block/string-format])
+                           (toolbox "Number" c/colour-number [block/number])
+                           (toolbox "Object" c/colour-object [block/object-base
+                                                              block/object-property])]}})))
 
 (defonce schema-viewer
   (.edit js/ace (dom/getElement "schema-viewer")
